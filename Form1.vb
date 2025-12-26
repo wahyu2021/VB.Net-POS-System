@@ -268,15 +268,33 @@ Public Class Form1
     End Sub
 
     Private Sub FindProductByCode(code As String)
-        For Each item In cb_product.Items
-            Dim p = DirectCast(item, Product)
-            If p.Code = code Then
-                cb_product.SelectedItem = item
-                Return
+        Try
+            ' Refactoring: Gunakan Repository atau cari by ValueMember (Id) jika source sudah diload
+            ' Opsi Terbaik: Cari di local list dulu agar tidak roundtrip ke DB jika tidak perlu, 
+            ' tapi disini kita simulasi best practice cari objectnya.
+            
+            ' Kita cari dulu di list yang sudah terbinding di ComboBox untuk sinkronisasi UI
+            Dim foundIdx As Integer = -1
+            
+            For i As Integer = 0 To cb_product.Items.Count - 1
+                Dim p = DirectCast(cb_product.Items(i), Product)
+                If p.Code = code Then
+                    foundIdx = i
+                    Exit For
+                End If
+            Next
+
+            If foundIdx >= 0 Then
+                cb_product.SelectedIndex = foundIdx
+                msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information
+                msg_dialog.Show("Produk Ditemukan!", "Scan Berhasil")
+            Else
+                 msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
+                 msg_dialog.Show("Produk dengan kode " & code & " tidak ditemukan di daftar.", "Not Found")
             End If
-        Next
-        msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
-        msg_dialog.Show("Produk dengan kode " & code & " tidak ditemukan.", "Not Found")
+        Catch ex As Exception
+            Logger.LogError("Error finding product", ex)
+        End Try
     End Sub
 
     Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed

@@ -50,6 +50,30 @@ Namespace Repositories
              Return prod
         End Function
 
+        Public Function GetProductByCode(code As String) As Product
+             Dim prod As Product = Nothing
+             Try
+                 Using conn = DatabaseConnection.GetConnection()
+                     Dim cmd As New MySqlCommand("SELECT * FROM products WHERE product_code = @code", conn)
+                     cmd.Parameters.AddWithValue("@code", code)
+                     Using rd = cmd.ExecuteReader()
+                         If rd.Read() Then
+                             prod = New Product With {
+                                .Id = Convert.ToInt32(rd("product_id")),
+                                .Code = rd("product_code").ToString(),
+                                .Name = rd("product_name").ToString(),
+                                .Price = Convert.ToInt32(rd("price")),
+                                .Stock = Convert.ToInt32(rd("stock"))
+                            }
+                         End If
+                     End Using
+                 End Using
+             Catch ex As Exception
+                Logger.LogError("Gagal mencari produk by code: " & code, ex)
+             End Try
+             Return prod
+        End Function
+
         Public Sub CreateProduct(p As Product)
             Using conn = DatabaseConnection.GetConnection()
                 Dim query As String = "INSERT INTO products (product_code, product_name, price, stock) VALUES (@code, @name, @price, @stock)"

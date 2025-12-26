@@ -67,12 +67,20 @@ Public Class AdminForm
             Return
         End If
 
+        Dim price As Integer
+        Dim stock As Integer
+        If Not Integer.TryParse(txt_p_price.Text, price) OrElse Not Integer.TryParse(txt_p_stock.Text, stock) Then
+            msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
+            msg_dialog.Show("Harga dan Stok harus berupa angka valid!", "Validasi")
+            Return
+        End If
+
         Try
             Dim p As New Product With {
                 .Code = txt_p_code.Text,
                 .Name = txt_p_name.Text,
-                .Price = Integer.Parse(txt_p_price.Text),
-                .Stock = Integer.Parse(txt_p_stock.Text)
+                .Price = price,
+                .Stock = stock
             }
 
             If btn_p_save.Text = "UPDATE" Then

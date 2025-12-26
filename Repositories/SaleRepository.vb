@@ -24,21 +24,32 @@ Namespace Repositories
                     Dim saleId = Convert.ToInt32(cmdHeader.ExecuteScalar())
                     sale.Id = saleId
 
-                    ' 2. Insert Details
+                    ' 2. Insert Details (Refactored: Command Reuse)
+                    Dim sqlDetail As String = "INSERT INTO sale_details (sale_id, product_id, quantity, price_at_moment, total_line_item) VALUES (@sid, @pid, @qty, @price, @total)"
+                    Dim cmdDetail As New MySqlCommand(sqlDetail, conn, transaction)
+                    ' Init parameters
+                    cmdDetail.Parameters.AddWithValue("@sid", 0)
+                    cmdDetail.Parameters.AddWithValue("@pid", 0)
+                    cmdDetail.Parameters.AddWithValue("@qty", 0)
+                    cmdDetail.Parameters.AddWithValue("@price", 0)
+                    cmdDetail.Parameters.AddWithValue("@total", 0)
+
+                    Dim cmdStock As New MySqlCommand("UPDATE products SET stock = stock - @qty WHERE product_id = @pid", conn, transaction)
+                    cmdStock.Parameters.AddWithValue("@qty", 0)
+                    cmdStock.Parameters.AddWithValue("@pid", 0)
+
                     For Each detail In details
-                        Dim sqlDetail As String = "INSERT INTO sale_details (sale_id, product_id, quantity, price_at_moment, total_line_item) VALUES (@sid, @pid, @qty, @price, @total)"
-                        Dim cmdDetail As New MySqlCommand(sqlDetail, conn, transaction)
-                        cmdDetail.Parameters.AddWithValue("@sid", saleId)
-                        cmdDetail.Parameters.AddWithValue("@pid", detail.ProductId)
-                        cmdDetail.Parameters.AddWithValue("@qty", detail.Quantity)
-                        cmdDetail.Parameters.AddWithValue("@price", detail.PriceAtMoment)
-                        cmdDetail.Parameters.AddWithValue("@total", detail.TotalLineItem)
+                        ' Execute Detail Insert
+                        cmdDetail.Parameters("@sid").Value = saleId
+                        cmdDetail.Parameters("@pid").Value = detail.ProductId
+                        cmdDetail.Parameters("@qty").Value = detail.Quantity
+                        cmdDetail.Parameters("@price").Value = detail.PriceAtMoment
+                        cmdDetail.Parameters("@total").Value = detail.TotalLineItem
                         cmdDetail.ExecuteNonQuery()
                         
-                        ' Update Stock
-                        Dim cmdStock As New MySqlCommand("UPDATE products SET stock = stock - @qty WHERE product_id = @pid", conn, transaction)
-                        cmdStock.Parameters.AddWithValue("@qty", detail.Quantity)
-                        cmdStock.Parameters.AddWithValue("@pid", detail.ProductId)
+                        ' Execute Stock Update
+                        cmdStock.Parameters("@qty").Value = detail.Quantity
+                        cmdStock.Parameters("@pid").Value = detail.ProductId
                         cmdStock.ExecuteNonQuery()
                     Next
 
