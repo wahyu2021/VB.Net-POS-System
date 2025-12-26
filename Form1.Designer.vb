@@ -61,6 +61,11 @@ Partial Class Form1
         Label3 = New Label()
         txt_qty = New Guna.UI2.WinForms.Guna2TextBox()
         btn_add = New Guna.UI2.WinForms.Guna2Button()
+        lbl_scan_title = New Label()
+        cb_devices = New Guna.UI2.WinForms.Guna2ComboBox()
+        pb_camera = New Guna.UI2.WinForms.Guna2PictureBox()
+        btn_start_scan = New Guna.UI2.WinForms.Guna2Button()
+        TimerScan = New Timer(components)
         pnl_cart = New Guna.UI2.WinForms.Guna2Panel()
         lbl_title_cart = New Label()
         btn_clear = New Guna.UI2.WinForms.Guna2Button()
@@ -176,6 +181,10 @@ Partial Class Form1
         pnl_input.Controls.Add(Label3)
         pnl_input.Controls.Add(txt_qty)
         pnl_input.Controls.Add(btn_add)
+        pnl_input.Controls.Add(lbl_scan_title)
+        pnl_input.Controls.Add(cb_devices)
+        pnl_input.Controls.Add(pb_camera)
+        pnl_input.Controls.Add(btn_start_scan)
         pnl_input.CustomizableEdges = CustomizableEdges15
         pnl_input.FillColor = Color.White
         pnl_input.Location = New Point(20, 90)
@@ -299,6 +308,63 @@ Partial Class Form1
         btn_add.Size = New Size(340, 50)
         btn_add.TabIndex = 7
         btn_add.Text = "+ TAMBAH KE KERANJANG"
+        ' 
+        ' lbl_scan_title
+        ' 
+        lbl_scan_title.AutoSize = True
+        lbl_scan_title.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        lbl_scan_title.ForeColor = Color.FromArgb(CByte(15), CByte(52), CByte(97))
+        lbl_scan_title.Location = New Point(20, 430)
+        lbl_scan_title.Name = "lbl_scan_title"
+        lbl_scan_title.Size = New Size(150, 25)
+        lbl_scan_title.TabIndex = 8
+        lbl_scan_title.Text = "Scan Barcode/QR"
+        ' 
+        ' cb_devices
+        ' 
+        cb_devices.BackColor = Color.Transparent
+        cb_devices.BorderRadius = 8
+        cb_devices.DrawMode = DrawMode.OwnerDrawFixed
+        cb_devices.DropDownStyle = ComboBoxStyle.DropDownList
+        cb_devices.FillColor = Color.FromArgb(CByte(250), CByte(250), CByte(252))
+        cb_devices.FocusedColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
+        cb_devices.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
+        cb_devices.Font = New Font("Segoe UI", 10F)
+        cb_devices.ForeColor = Color.FromArgb(CByte(68), CByte(88), CByte(112))
+        cb_devices.ItemHeight = 30
+        cb_devices.Location = New Point(20, 460)
+        cb_devices.Name = "cb_devices"
+        cb_devices.Size = New Size(210, 36)
+        cb_devices.TabIndex = 9
+        ' 
+        ' btn_start_scan
+        ' 
+        btn_start_scan.BackColor = Color.White
+        btn_start_scan.BorderRadius = 18
+        btn_start_scan.FillColor = Color.FromArgb(CByte(40), CByte(167), CByte(69))
+        btn_start_scan.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
+        btn_start_scan.ForeColor = Color.White
+        btn_start_scan.Location = New Point(240, 460)
+        btn_start_scan.Name = "btn_start_scan"
+        btn_start_scan.Size = New Size(120, 36)
+        btn_start_scan.TabIndex = 10
+        btn_start_scan.Text = "MULAI SCAN"
+        ' 
+        ' pb_camera
+        ' 
+        pb_camera.BackColor = Color.Black
+        pb_camera.BorderRadius = 10
+        pb_camera.FillColor = Color.Black
+        pb_camera.Location = New Point(20, 510)
+        pb_camera.Name = "pb_camera"
+        pb_camera.Size = New Size(340, 120)
+        pb_camera.SizeMode = PictureBoxSizeMode.Zoom
+        pb_camera.TabIndex = 11
+        pb_camera.TabStop = False
+        ' 
+        ' TimerScan
+        ' 
+        TimerScan.Interval = 1000
         ' 
         ' pnl_cart
         ' 
@@ -594,9 +660,13 @@ Partial Class Form1
     Friend WithEvents txt_price As Guna.UI2.WinForms.Guna2TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txt_qty As Guna.UI2.WinForms.Guna2TextBox
-    Friend WithEvents btn_add As Guna.UI2.WinForms.Guna2Button
-
-    Friend WithEvents pnl_cart As Guna.UI2.WinForms.Guna2Panel
+        Friend WithEvents btn_add As Guna.UI2.WinForms.Guna2Button
+        Friend WithEvents lbl_scan_title As Label
+        Friend WithEvents cb_devices As Guna.UI2.WinForms.Guna2ComboBox
+        Friend WithEvents pb_camera As Guna.UI2.WinForms.Guna2PictureBox
+        Friend WithEvents btn_start_scan As Guna.UI2.WinForms.Guna2Button
+        Friend WithEvents TimerScan As Timer
+        Friend WithEvents pnl_cart As Guna.UI2.WinForms.Guna2Panel
     Friend WithEvents pnl_cart_header As Guna.UI2.WinForms.Guna2Panel
     Friend WithEvents lbl_title_cart As System.Windows.Forms.Label
     Friend WithEvents btn_clear As Guna.UI2.WinForms.Guna2Button

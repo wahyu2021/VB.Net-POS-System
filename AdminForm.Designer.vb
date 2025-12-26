@@ -47,8 +47,10 @@ Partial Class AdminForm
         Me.txt_p_name = New Guna.UI2.WinForms.Guna2TextBox()
         Me.txt_p_price = New Guna.UI2.WinForms.Guna2TextBox()
         Me.txt_p_stock = New Guna.UI2.WinForms.Guna2TextBox()
-        Me.btn_p_save = New Guna.UI2.WinForms.Guna2Button()
-        Me.btn_p_delete = New Guna.UI2.WinForms.Guna2Button()
+        btn_p_save = New Guna.UI2.WinForms.Guna2Button()
+        btn_gen_qr = New Guna.UI2.WinForms.Guna2Button()
+        pic_qr = New Guna.UI2.WinForms.Guna2PictureBox()
+        btn_p_delete = New Guna.UI2.WinForms.Guna2Button()
         Me.btn_p_clear = New Guna.UI2.WinForms.Guna2Button()
         Me.lbl_p_info = New System.Windows.Forms.Label()
         Me.Guna2Separator1 = New Guna.UI2.WinForms.Guna2Separator()
@@ -228,8 +230,10 @@ Partial Class AdminForm
         Me.pnl_product_form.Controls.Add(Me.Guna2Separator1)
         Me.pnl_product_form.Controls.Add(Me.lbl_p_info)
         Me.pnl_product_form.Controls.Add(Me.btn_p_clear)
-        Me.pnl_product_form.Controls.Add(Me.btn_p_delete)
         Me.pnl_product_form.Controls.Add(Me.btn_p_save)
+        Me.pnl_product_form.Controls.Add(Me.btn_gen_qr)
+        Me.pnl_product_form.Controls.Add(Me.pic_qr)
+        Me.pnl_product_form.Controls.Add(Me.btn_p_delete)
         Me.pnl_product_form.Controls.Add(Me.txt_p_stock)
         Me.pnl_product_form.Controls.Add(Me.txt_p_price)
         Me.pnl_product_form.Controls.Add(Me.txt_p_name)
@@ -237,7 +241,7 @@ Partial Class AdminForm
         Me.pnl_product_form.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnl_product_form.Location = New System.Drawing.Point(10, 10)
         Me.pnl_product_form.Name = "pnl_product_form"
-        Me.pnl_product_form.Size = New System.Drawing.Size(602, 240)
+        Me.pnl_product_form.Size = New System.Drawing.Size(602, 350)
         Me.pnl_product_form.TabIndex = 0
 
         ' Inputs (Disusun Vertikal agar aman & rapi)
@@ -285,6 +289,23 @@ Partial Class AdminForm
         Me.btn_p_clear.Size = New System.Drawing.Size(130, 45)
         Me.btn_p_clear.BorderRadius = 8
         Me.btn_p_clear.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right
+        
+        ' btn_gen_qr
+        Me.btn_gen_qr.Text = "QR"
+        Me.btn_gen_qr.FillColor = System.Drawing.Color.Teal
+        Me.btn_gen_qr.BackColor = System.Drawing.Color.Transparent
+        Me.btn_gen_qr.Location = New System.Drawing.Point(280, 20)
+        Me.btn_gen_qr.Size = New System.Drawing.Size(60, 40)
+        Me.btn_gen_qr.BorderRadius = 5
+        
+        ' pic_qr
+        Me.pic_qr.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pic_qr.FillColor = System.Drawing.Color.WhiteSmoke
+        Me.pic_qr.Location = New System.Drawing.Point(450, 200)
+        Me.pic_qr.Size = New System.Drawing.Size(130, 130)
+        Me.pic_qr.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pic_qr.BorderRadius = 5
+        Me.pic_qr.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right
         
         Me.Guna2Separator1.Location = New System.Drawing.Point(20, 190)
         Me.Guna2Separator1.Size = New System.Drawing.Size(560, 10)
@@ -434,6 +455,8 @@ Partial Class AdminForm
     Friend WithEvents btn_p_save As Guna.UI2.WinForms.Guna2Button
     Friend WithEvents btn_p_delete As Guna.UI2.WinForms.Guna2Button
     Friend WithEvents btn_p_clear As Guna.UI2.WinForms.Guna2Button
+    Friend WithEvents btn_gen_qr As Guna.UI2.WinForms.Guna2Button
+    Friend WithEvents pic_qr As Guna.UI2.WinForms.Guna2PictureBox
     Friend WithEvents lbl_p_info As System.Windows.Forms.Label
     Friend WithEvents Guna2Separator1 As Guna.UI2.WinForms.Guna2Separator
 

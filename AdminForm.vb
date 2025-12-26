@@ -2,6 +2,9 @@ Imports UAS_1.Models
 Imports UAS_1.Repositories
 Imports UAS_1.Core
 Imports System.Windows.Forms
+Imports ZXing
+Imports ZXing.Common
+Imports ZXing.Windows.Compatibility
 
 Public Class AdminForm
     Private _repoProduct As New ProductRepository()
@@ -9,7 +12,7 @@ Public Class AdminForm
 
     Private Sub AdminForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lbl_admin_title.Text = $"ADMIN PANEL{vbCrLf}{Session.CurrentUser.FullName}"
-        
+
         LoadProducts()
         LoadHistory()
     End Sub
@@ -30,7 +33,7 @@ Public Class AdminForm
         msg_dialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.YesNo
         msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Question
         Dim result = msg_dialog.Show("Logout dari Admin?", "Konfirmasi")
-        
+
         If result = DialogResult.Yes Then
             Session.CurrentUser = Nothing
             Dim login As New LoginForm()
@@ -40,7 +43,7 @@ Public Class AdminForm
         ' Reset
         msg_dialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK
     End Sub
-    
+
     Private Sub AdminForm_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
         Application.Exit()
     End Sub
@@ -81,7 +84,7 @@ Public Class AdminForm
                 msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information
                 msg_dialog.Show("Produk berhasil ditambahkan!", "Sukses")
             End If
-            
+
             ClearForm()
             LoadProducts()
         Catch ex As Exception
@@ -123,7 +126,7 @@ Public Class AdminForm
         txt_p_name.Text = ""
         txt_p_price.Text = ""
         txt_p_stock.Text = ""
-        txt_p_code.Enabled = True 
+        txt_p_code.Enabled = True
         btn_p_save.Text = "SIMPAN"
     End Sub
 
@@ -134,8 +137,8 @@ Public Class AdminForm
             txt_p_name.Text = row.Cells("Name").Value.ToString()
             txt_p_price.Text = row.Cells("Price").Value.ToString()
             txt_p_stock.Text = row.Cells("Stock").Value.ToString()
-            
-            txt_p_code.Enabled = False 
+
+            txt_p_code.Enabled = False
             btn_p_save.Text = "UPDATE"
         End If
     End Sub
@@ -149,6 +152,29 @@ Public Class AdminForm
         Catch ex As Exception
             msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error
             msg_dialog.Show("Error load history: " & ex.Message, "Error")
+        End Try
+    End Sub
+
+    Private Sub btn_gen_qr_Click(sender As Object, e As EventArgs) Handles btn_gen_qr.Click
+        If String.IsNullOrEmpty(txt_p_code.Text) Then
+            msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
+            msg_dialog.Show("Masukkan Kode Produk terlebih dahulu!", "Peringatan")
+            Return
+        End If
+
+        Try
+            Dim writer As New BarcodeWriter()
+            writer.Format = BarcodeFormat.QR_CODE
+            writer.Options = New EncodingOptions With {
+                .Height = 300,
+                .Width = 300,
+                .Margin = 1
+            }
+            pic_qr.Image = writer.Write(txt_p_code.Text)
+        Catch ex As Exception
+            Logger.LogError("Gagal generate QR", ex)
+            msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error
+            msg_dialog.Show("Gagal generate QR: " & ex.Message, "Error")
         End Try
     End Sub
 End Class

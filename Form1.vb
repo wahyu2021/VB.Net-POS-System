@@ -4,6 +4,10 @@ Imports UAS_1.Services
 Imports UAS_1.Core
 Imports UAS_1.Utils
 Imports System.Collections.Generic
+Imports AForge.Video
+Imports AForge.Video.DirectShow
+Imports ZXing
+Imports ZXing.Windows.Compatibility
 
 Public Class Form1
     Private _repoProduct As New ProductRepository()
@@ -13,6 +17,10 @@ Public Class Form1
     ' Temporary shopping cart storage
     Private _shoppingCart As New List(Of SaleDetail)
     Private _currentSubTotal As Integer = 0
+
+    ' Camera Variables
+    Dim FilterInfo As FilterInfoCollection
+    Dim CaptureDevice As VideoCaptureDevice
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Cek Session
@@ -26,6 +34,19 @@ Public Class Form1
         lbl_welcome.Text = $"Halo, {Session.CurrentUser.FullName} ({Session.CurrentUser.Role})"
         Logger.LogInfo("Aplikasi kasir (Main Form) dimuat.")
         LoadProducts()
+
+        ' Init Camera Devices
+        Try
+            FilterInfo = New FilterInfoCollection(FilterCategory.VideoInputDevice)
+            For Each Device As FilterInfo In FilterInfo
+                cb_devices.Items.Add(Device.Name)
+            Next
+            If cb_devices.Items.Count > 0 Then
+                cb_devices.SelectedIndex = 0
+            End If
+        Catch ex As Exception
+            Logger.LogError("Error init camera", ex)
+        End Try
     End Sub
 
     Private Sub LoadProducts()
@@ -191,7 +212,78 @@ Public Class Form1
         msg_dialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK
     End Sub
 
+    ' Camera & Scan Logic
+    Private Sub btn_start_scan_Click(sender As Object, e As EventArgs) Handles btn_start_scan.Click
+        Try
+            If CaptureDevice IsNot Nothing AndAlso CaptureDevice.IsRunning Then
+                CaptureDevice.SignalToStop()
+                CaptureDevice.WaitForStop()
+            End If
+
+            If cb_devices.SelectedIndex < 0 Then
+                msg_dialog.Show("Pilih kamera terlebih dahulu!", "Info")
+                Return
+            End If
+
+            CaptureDevice = New VideoCaptureDevice(FilterInfo(cb_devices.SelectedIndex).MonikerString)
+            AddHandler CaptureDevice.NewFrame, AddressOf Capture_NewFrame
+            CaptureDevice.Start()
+            TimerScan.Start()
+        Catch ex As Exception
+            Logger.LogError("Error starting camera", ex)
+            msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error
+            msg_dialog.Show("Error starting camera: " & ex.Message, "Error")
+        End Try
+    End Sub
+
+    Private Sub Capture_NewFrame(sender As Object, eventArgs As NewFrameEventArgs)
+        Try
+            Dim bmp = DirectCast(eventArgs.Frame.Clone(), Bitmap)
+            If pb_camera.InvokeRequired Then
+                pb_camera.Invoke(Sub() pb_camera.Image = bmp)
+            Else
+                pb_camera.Image = bmp
+            End If
+        Catch ex As Exception
+            Logger.LogError("Error capturing frame", ex)
+        End Try
+    End Sub
+
+    Private Sub TimerScan_Tick(sender As Object, e As EventArgs) Handles TimerScan.Tick
+        If pb_camera.Image IsNot Nothing Then
+            Try
+                Dim Reader As New BarcodeReader()
+                Dim Result As Result = Reader.Decode(DirectCast(pb_camera.Image, Bitmap))
+
+                If Result IsNot Nothing Then
+                    TimerScan.Stop()
+                    CaptureDevice.SignalToStop()
+                    Console.Beep()
+                    FindProductByCode(Result.Text)
+                End If
+            Catch ex As Exception
+                Logger.LogError("Error scanning/decoding", ex)
+            End Try
+        End If
+    End Sub
+
+    Private Sub FindProductByCode(code As String)
+        For Each item In cb_product.Items
+            Dim p = DirectCast(item, Product)
+            If p.Code = code Then
+                cb_product.SelectedItem = item
+                Return
+            End If
+        Next
+        msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
+        msg_dialog.Show("Produk dengan kode " & code & " tidak ditemukan.", "Not Found")
+    End Sub
+
     Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        If CaptureDevice IsNot Nothing AndAlso CaptureDevice.IsRunning Then
+            CaptureDevice.SignalToStop()
+            CaptureDevice.WaitForStop()
+        End If
         Application.Exit()
     End Sub
 End Class
