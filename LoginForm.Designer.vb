@@ -132,16 +132,18 @@ Partial Class LoginForm
         ' btn_exit
         ' 
         btn_exit.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        btn_exit.BorderRadius = 12
         btn_exit.CustomizableEdges = CustomizableEdges3
-        btn_exit.FillColor = Color.White
-        btn_exit.HoverState.FillColor = Color.Red
-        btn_exit.IconColor = Color.Gray
-        btn_exit.Location = New Point(380, 5)
+        btn_exit.FillColor = Color.FromArgb(CByte(255), CByte(240), CByte(240))
+        btn_exit.HoverState.FillColor = Color.FromArgb(CByte(220), CByte(53), CByte(69))
+        btn_exit.HoverState.IconColor = Color.White
+        btn_exit.IconColor = Color.FromArgb(CByte(220), CByte(53), CByte(69))
+        btn_exit.Location = New Point(375, 10)
         btn_exit.Name = "btn_exit"
         btn_exit.ShadowDecoration.CustomizableEdges = CustomizableEdges4
-        btn_exit.Size = New Size(45, 29)
+        btn_exit.Size = New Size(40, 40)
         btn_exit.TabIndex = 10
-        ' 
+        '
         ' Label2
         ' 
         Label2.AutoSize = True
