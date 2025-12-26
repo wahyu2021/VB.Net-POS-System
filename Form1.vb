@@ -8,6 +8,7 @@ Imports AForge.Video
 Imports AForge.Video.DirectShow
 Imports ZXing
 Imports ZXing.Windows.Compatibility
+Imports System.Linq
 
 Public Class Form1
     Private _repoProduct As New ProductRepository()
@@ -21,6 +22,10 @@ Public Class Form1
     ' Camera Variables
     Dim FilterInfo As FilterInfoCollection
     Dim CaptureDevice As VideoCaptureDevice
+
+    ' Search Variables
+    Private _cachedProducts As New List(Of Product)
+    Private _selectedProduct As Product
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Cek Session
@@ -51,15 +56,19 @@ Public Class Form1
 
     Private Sub LoadProducts()
         Try
-            Dim products = _repoProduct.GetAllProducts()
-            cb_product.DataSource = products
-            cb_product.DisplayMember = "Name"
-            cb_product.ValueMember = "Id"
-
-            ' Reset fields
-            cb_product.SelectedIndex = -1
-            txt_price.Text = ""
-            txt_qty.Text = ""
+            _cachedProducts = _repoProduct.GetAllProducts()
+            
+            ' Setup AutoComplete
+            Dim source As New AutoCompleteStringCollection()
+            For Each p In _cachedProducts
+                source.Add(p.Name)
+            Next
+            
+            txt_search_product.AutoCompleteCustomSource = source
+            txt_search_product.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+            txt_search_product.AutoCompleteSource = AutoCompleteSource.CustomSource
+            
+            ResetInput()
         Catch ex As Exception
             Dim msg = "Error loading products: " & ex.Message
             Logger.LogError(msg, ex)
@@ -68,18 +77,40 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub cb_product_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cb_product.SelectedIndexChanged
-        If cb_product.SelectedItem IsNot Nothing Then
-            Dim selectedProduct = DirectCast(cb_product.SelectedItem, Product)
-            txt_price.Text = "Rp " & selectedProduct.Price.ToString("N0")
-        Else
-            txt_price.Text = ""
+    Private Sub ResetInput()
+        txt_search_product.Text = ""
+        txt_price.Text = ""
+        txt_qty.Text = ""
+        _selectedProduct = Nothing
+    End Sub
+
+    Private Sub SelectProduct(p As Product)
+        _selectedProduct = p
+        txt_search_product.Text = p.Name
+        txt_price.Text = "Rp " & p.Price.ToString("N0")
+        txt_qty.Focus()
+    End Sub
+
+    Private Sub txt_search_product_KeyDown(sender As Object, e As KeyEventArgs) Handles txt_search_product.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Dim query = txt_search_product.Text.Trim()
+            If String.IsNullOrEmpty(query) Then Return
+            
+            Dim found = _cachedProducts.FirstOrDefault(Function(p) p.Name.Equals(query, StringComparison.OrdinalIgnoreCase) OrElse p.Code.Equals(query, StringComparison.OrdinalIgnoreCase))
+            
+            If found IsNot Nothing Then
+                SelectProduct(found)
+            Else
+                 ' Optional: Show toast or ignore
+            End If
+            e.Handled = True
+            e.SuppressKeyPress = True
         End If
     End Sub
 
     Private Sub btn_add_Click(sender As Object, e As EventArgs) Handles btn_add.Click
         Try
-            If cb_product.SelectedItem Is Nothing Then
+            If _selectedProduct Is Nothing Then
                 msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
                 msg_dialog.Show("Pilih barang terlebih dahulu!", "Peringatan")
                 Return
@@ -92,21 +123,19 @@ Public Class Form1
                 Return
             End If
 
-            Dim selectedProduct = DirectCast(cb_product.SelectedItem, Product)
-
-            ' Check stock (Optional based on requirement, but good practice)
-            If selectedProduct.Stock < qty Then
+            ' Check stock
+            If _selectedProduct.Stock < qty Then
                 msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning
-                msg_dialog.Show($"Stok tidak cukup! Sisa stok: {selectedProduct.Stock}", "Stok Habis")
+                msg_dialog.Show($"Stok tidak cukup! Sisa stok: {_selectedProduct.Stock}", "Stok Habis")
                 Return
             End If
 
-            Dim price = selectedProduct.Price
+            Dim price = _selectedProduct.Price
             Dim totalLine = price * qty
 
             ' Create detail object
             Dim detail As New SaleDetail With {
-                .ProductId = selectedProduct.Id,
+                .ProductId = _selectedProduct.Id,
                 .Quantity = qty,
                 .PriceAtMoment = price,
                 .TotalLineItem = totalLine
@@ -116,7 +145,7 @@ Public Class Form1
             _currentSubTotal += totalLine
 
             ' Update DataGridView instead of ListBox
-            dgv_items.Rows.Add(selectedProduct.Name, "Rp " & price.ToString("N0"), qty, "Rp " & totalLine.ToString("N0"))
+            dgv_items.Rows.Add(_selectedProduct.Name, "Rp " & price.ToString("N0"), qty, "Rp " & totalLine.ToString("N0"))
 
             ' Calculate Discount & Grand Total dynamically
             Dim discountAmount = _serviceDiscount.HitungDiskon(_currentSubTotal)
@@ -128,10 +157,7 @@ Public Class Form1
             lbl_grand_total.Text = "Rp " & grandTotal.ToString("N0")
 
             ' Clear input
-            txt_qty.Text = ""
-            cb_product.SelectedIndex = -1
-            cb_product.SelectedItem = Nothing
-            txt_price.Text = ""
+            ResetInput()
         Catch ex As Exception
             Logger.LogError("Error adding item to cart", ex)
             msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error
@@ -269,23 +295,10 @@ Public Class Form1
 
     Private Sub FindProductByCode(code As String)
         Try
-            ' Refactoring: Gunakan Repository atau cari by ValueMember (Id) jika source sudah diload
-            ' Opsi Terbaik: Cari di local list dulu agar tidak roundtrip ke DB jika tidak perlu, 
-            ' tapi disini kita simulasi best practice cari objectnya.
-            
-            ' Kita cari dulu di list yang sudah terbinding di ComboBox untuk sinkronisasi UI
-            Dim foundIdx As Integer = -1
-            
-            For i As Integer = 0 To cb_product.Items.Count - 1
-                Dim p = DirectCast(cb_product.Items(i), Product)
-                If p.Code = code Then
-                    foundIdx = i
-                    Exit For
-                End If
-            Next
+            Dim found = _cachedProducts.FirstOrDefault(Function(p) p.Code = code)
 
-            If foundIdx >= 0 Then
-                cb_product.SelectedIndex = foundIdx
+            If found IsNot Nothing Then
+                SelectProduct(found)
                 msg_dialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information
                 msg_dialog.Show("Produk Ditemukan!", "Scan Berhasil")
             Else

@@ -1,6 +1,7 @@
 Imports UAS_1.Models
 Imports UAS_1.Repositories
 Imports UAS_1.Core
+Imports UAS_1.Utils
 Imports System.Windows.Forms
 Imports ZXing
 Imports ZXing.Common

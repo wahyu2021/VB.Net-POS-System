@@ -55,7 +55,7 @@ Partial Class Form1
         pnl_input = New Guna.UI2.WinForms.Guna2Panel()
         lbl_title_input = New Label()
         Label1 = New Label()
-        cb_product = New Guna.UI2.WinForms.Guna2ComboBox()
+        txt_search_product = New Guna.UI2.WinForms.Guna2TextBox()
         Label2 = New Label()
         txt_price = New Guna.UI2.WinForms.Guna2TextBox()
         Label3 = New Label()
@@ -175,7 +175,7 @@ Partial Class Form1
         pnl_input.BorderRadius = 12
         pnl_input.Controls.Add(lbl_title_input)
         pnl_input.Controls.Add(Label1)
-        pnl_input.Controls.Add(cb_product)
+        pnl_input.Controls.Add(txt_search_product)
         pnl_input.Controls.Add(Label2)
         pnl_input.Controls.Add(txt_price)
         pnl_input.Controls.Add(Label3)
@@ -220,24 +220,21 @@ Partial Class Form1
         Label1.TabIndex = 1
         Label1.Text = "PILIH BARANG"
         ' 
-        ' cb_product
+        ' txt_search_product
         ' 
-        cb_product.BackColor = Color.Transparent
-        cb_product.BorderRadius = 8
-        cb_product.CustomizableEdges = CustomizableEdges7
-        cb_product.DrawMode = DrawMode.OwnerDrawFixed
-        cb_product.DropDownStyle = ComboBoxStyle.DropDownList
-        cb_product.FillColor = Color.FromArgb(CByte(250), CByte(250), CByte(252))
-        cb_product.FocusedColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
-        cb_product.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
-        cb_product.Font = New Font("Segoe UI", 10F)
-        cb_product.ForeColor = Color.FromArgb(CByte(68), CByte(88), CByte(112))
-        cb_product.ItemHeight = 40
-        cb_product.Location = New Point(20, 105)
-        cb_product.Name = "cb_product"
-        cb_product.ShadowDecoration.CustomizableEdges = CustomizableEdges8
-        cb_product.Size = New Size(340, 46)
-        cb_product.TabIndex = 2
+        txt_search_product.BorderRadius = 8
+        txt_search_product.Cursor = Cursors.IBeam
+        txt_search_product.DefaultText = ""
+        txt_search_product.FillColor = Color.FromArgb(CByte(250), CByte(250), CByte(252))
+        txt_search_product.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
+        txt_search_product.Font = New Font("Segoe UI", 10F)
+        txt_search_product.ForeColor = Color.Black
+        txt_search_product.Location = New Point(20, 105)
+        txt_search_product.Name = "txt_search_product"
+        txt_search_product.PlaceholderText = "Ketik Nama / Kode Barang..."
+        txt_search_product.SelectedText = ""
+        txt_search_product.Size = New Size(340, 40)
+        txt_search_product.TabIndex = 2
         ' 
         ' Label2
         ' 
@@ -653,10 +650,10 @@ Partial Class Form1
     Friend WithEvents btn_logout As Guna.UI2.WinForms.Guna2Button
 
     Friend WithEvents pnl_input As Guna.UI2.WinForms.Guna2Panel
-    Friend WithEvents lbl_title_input As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents cb_product As Guna.UI2.WinForms.Guna2ComboBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lbl_title_input As Label
+    Friend WithEvents Label1 As Label
+    Friend WithEvents txt_search_product As Guna.UI2.WinForms.Guna2TextBox
+    Friend WithEvents Label2 As Label
     Friend WithEvents txt_price As Guna.UI2.WinForms.Guna2TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txt_qty As Guna.UI2.WinForms.Guna2TextBox
