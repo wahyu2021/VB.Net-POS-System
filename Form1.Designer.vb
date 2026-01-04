@@ -151,6 +151,7 @@ Partial Class Form1
         pic_logo_small.BorderRadius = 5
         pic_logo_small.CustomizableEdges = CustomizableEdges1
         pic_logo_small.FillColor = Color.WhiteSmoke
+        pic_logo_small.Image = My.Resources.Resources.logo
         pic_logo_small.ImageRotate = 0F
         pic_logo_small.Location = New Point(20, 15)
         pic_logo_small.Name = "pic_logo_small"
@@ -168,9 +169,9 @@ Partial Class Form1
         lbl_app_title.ForeColor = Color.White
         lbl_app_title.Location = New Point(70, 20)
         lbl_app_title.Name = "lbl_app_title"
-        lbl_app_title.Size = New Size(162, 30)
+        lbl_app_title.Size = New Size(113, 30)
         lbl_app_title.TabIndex = 1
-        lbl_app_title.Text = "FoxeMart POS"
+        lbl_app_title.Text = "FoxeMart"
         ' 
         ' btn_nav_home
         ' 
@@ -185,7 +186,7 @@ Partial Class Form1
         btn_nav_home.ShadowDecoration.CustomizableEdges = CustomizableEdges4
         btn_nav_home.Size = New Size(100, 35)
         btn_nav_home.TabIndex = 5
-        btn_nav_home.Text = "BERANDA"
+        btn_nav_home.Text = "POS"
         ' 
         ' btn_view_products
         ' 
@@ -293,7 +294,8 @@ Partial Class Form1
         lbl_title_input.AutoSize = True
         lbl_title_input.Font = New Font("Segoe UI", 14F, FontStyle.Bold)
         lbl_title_input.ForeColor = Color.FromArgb(CByte(15), CByte(52), CByte(97))
-        lbl_title_input.Location = New Point(20, 20)
+        lbl_title_input.Location = New Point(17, 256)
+        lbl_title_input.Margin = New Padding(0, 0, 3, 0)
         lbl_title_input.Name = "lbl_title_input"
         lbl_title_input.Size = New Size(133, 25)
         lbl_title_input.TabIndex = 0
@@ -304,7 +306,7 @@ Partial Class Form1
         Label1.AutoSize = True
         Label1.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label1.ForeColor = Color.FromArgb(CByte(90), CByte(107), CByte(125))
-        Label1.Location = New Point(20, 80)
+        Label1.Location = New Point(21, 294)
         Label1.Name = "Label1"
         Label1.Size = New Size(90, 15)
         Label1.TabIndex = 1
@@ -320,7 +322,7 @@ Partial Class Form1
         txt_search_product.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
         txt_search_product.Font = New Font("Segoe UI", 10F)
         txt_search_product.ForeColor = Color.Black
-        txt_search_product.Location = New Point(20, 105)
+        txt_search_product.Location = New Point(21, 319)
         txt_search_product.Name = "txt_search_product"
         txt_search_product.PlaceholderText = "Ketik Nama / Kode Barang..."
         txt_search_product.SelectedText = ""
@@ -333,7 +335,7 @@ Partial Class Form1
         Label2.AutoSize = True
         Label2.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label2.ForeColor = Color.FromArgb(CByte(90), CByte(107), CByte(125))
-        Label2.Location = New Point(20, 170)
+        Label2.Location = New Point(21, 384)
         Label2.Name = "Label2"
         Label2.Size = New Size(99, 15)
         Label2.TabIndex = 3
@@ -347,7 +349,7 @@ Partial Class Form1
         txt_price.FillColor = Color.FromArgb(CByte(244), CByte(246), CByte(248))
         txt_price.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         txt_price.ForeColor = Color.Black
-        txt_price.Location = New Point(20, 195)
+        txt_price.Location = New Point(21, 409)
         txt_price.Name = "txt_price"
         txt_price.PlaceholderText = ""
         txt_price.ReadOnly = True
@@ -361,7 +363,7 @@ Partial Class Form1
         Label3.AutoSize = True
         Label3.Font = New Font("Segoe UI", 9F, FontStyle.Bold)
         Label3.ForeColor = Color.FromArgb(CByte(90), CByte(107), CByte(125))
-        Label3.Location = New Point(20, 260)
+        Label3.Location = New Point(21, 474)
         Label3.Name = "Label3"
         Label3.Size = New Size(89, 15)
         Label3.TabIndex = 5
@@ -375,7 +377,7 @@ Partial Class Form1
         txt_qty.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
         txt_qty.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         txt_qty.ForeColor = Color.Black
-        txt_qty.Location = New Point(20, 285)
+        txt_qty.Location = New Point(21, 499)
         txt_qty.Name = "txt_qty"
         txt_qty.PlaceholderText = ""
         txt_qty.SelectedText = ""
@@ -391,7 +393,7 @@ Partial Class Form1
         btn_add.FillColor = Color.FromArgb(CByte(15), CByte(52), CByte(97))
         btn_add.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         btn_add.ForeColor = Color.White
-        btn_add.Location = New Point(20, 360)
+        btn_add.Location = New Point(21, 564)
         btn_add.Name = "btn_add"
         btn_add.ShadowDecoration.CustomizableEdges = CustomizableEdges18
         btn_add.Size = New Size(340, 50)
@@ -403,7 +405,7 @@ Partial Class Form1
         lbl_scan_title.AutoSize = True
         lbl_scan_title.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         lbl_scan_title.ForeColor = Color.FromArgb(CByte(15), CByte(52), CByte(97))
-        lbl_scan_title.Location = New Point(20, 430)
+        lbl_scan_title.Location = New Point(20, 9)
         lbl_scan_title.Name = "lbl_scan_title"
         lbl_scan_title.Size = New Size(141, 21)
         lbl_scan_title.TabIndex = 8
@@ -422,7 +424,7 @@ Partial Class Form1
         cb_devices.Font = New Font("Segoe UI", 10F)
         cb_devices.ForeColor = Color.FromArgb(CByte(68), CByte(88), CByte(112))
         cb_devices.ItemHeight = 30
-        cb_devices.Location = New Point(20, 460)
+        cb_devices.Location = New Point(20, 39)
         cb_devices.Name = "cb_devices"
         cb_devices.ShadowDecoration.CustomizableEdges = CustomizableEdges20
         cb_devices.Size = New Size(210, 36)
@@ -435,10 +437,10 @@ Partial Class Form1
         pb_camera.CustomizableEdges = CustomizableEdges21
         pb_camera.FillColor = Color.Black
         pb_camera.ImageRotate = 0F
-        pb_camera.Location = New Point(20, 510)
+        pb_camera.Location = New Point(20, 89)
         pb_camera.Name = "pb_camera"
         pb_camera.ShadowDecoration.CustomizableEdges = CustomizableEdges22
-        pb_camera.Size = New Size(340, 120)
+        pb_camera.Size = New Size(340, 153)
         pb_camera.SizeMode = PictureBoxSizeMode.Zoom
         pb_camera.TabIndex = 11
         pb_camera.TabStop = False
@@ -451,7 +453,7 @@ Partial Class Form1
         btn_start_scan.FillColor = Color.FromArgb(CByte(40), CByte(167), CByte(69))
         btn_start_scan.Font = New Font("Segoe UI", 10F, FontStyle.Bold)
         btn_start_scan.ForeColor = Color.White
-        btn_start_scan.Location = New Point(240, 460)
+        btn_start_scan.Location = New Point(240, 39)
         btn_start_scan.Name = "btn_start_scan"
         btn_start_scan.ShadowDecoration.CustomizableEdges = CustomizableEdges24
         btn_start_scan.Size = New Size(120, 36)
