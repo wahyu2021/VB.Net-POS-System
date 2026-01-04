@@ -80,7 +80,7 @@ Partial Class LoginForm
         pic_logo.FillColor = Color.WhiteSmoke
         pic_logo.Image = My.Resources.Resources.logo
         pic_logo.ImageRotate = 0F
-        pic_logo.Location = New Point(107, 80)
+        pic_logo.Location = New Point(108, 123)
         pic_logo.Name = "pic_logo"
         pic_logo.ShadowDecoration.CustomizableEdges = CustomizableEdges12
         pic_logo.Size = New Size(100, 100)
@@ -93,9 +93,9 @@ Partial Class LoginForm
         ' 
         lbl_brand_desc.AutoSize = True
         lbl_brand_desc.BackColor = Color.Transparent
-        lbl_brand_desc.Font = New Font("Segoe UI", 10.0F)
+        lbl_brand_desc.Font = New Font("Segoe UI", 10F)
         lbl_brand_desc.ForeColor = Color.FromArgb(CByte(200), CByte(200), CByte(220))
-        lbl_brand_desc.Location = New Point(48, 237)
+        lbl_brand_desc.Location = New Point(48, 279)
         lbl_brand_desc.Name = "lbl_brand_desc"
         lbl_brand_desc.Size = New Size(234, 38)
         lbl_brand_desc.TabIndex = 1
@@ -106,9 +106,9 @@ Partial Class LoginForm
         ' 
         lbl_brand_title.AutoSize = True
         lbl_brand_title.BackColor = Color.Transparent
-        lbl_brand_title.Font = New Font("Segoe UI", 24.0F, FontStyle.Bold)
+        lbl_brand_title.Font = New Font("Segoe UI", 24F, FontStyle.Bold)
         lbl_brand_title.ForeColor = Color.White
-        lbl_brand_title.Location = New Point(78, 183)
+        lbl_brand_title.Location = New Point(78, 226)
         lbl_brand_title.Name = "lbl_brand_title"
         lbl_brand_title.Size = New Size(164, 45)
         lbl_brand_title.TabIndex = 0
@@ -149,7 +149,7 @@ Partial Class LoginForm
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Font = New Font("Segoe UI", 10.0F)
+        Label2.Font = New Font("Segoe UI", 10F)
         Label2.ForeColor = Color.FromArgb(CByte(90), CByte(107), CByte(125))
         Label2.Location = New Point(55, 120)
         Label2.Name = "Label2"
@@ -163,7 +163,7 @@ Partial Class LoginForm
         btn_login.BorderRadius = 22
         btn_login.CustomizableEdges = CustomizableEdges1
         btn_login.FillColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
-        btn_login.Font = New Font("Segoe UI", 11.0F, FontStyle.Bold)
+        btn_login.Font = New Font("Segoe UI", 11F, FontStyle.Bold)
         btn_login.ForeColor = Color.White
         btn_login.HoverState.FillColor = Color.FromArgb(CByte(220), CByte(100), CByte(20))
         btn_login.Location = New Point(55, 310)
@@ -186,7 +186,7 @@ Partial Class LoginForm
         txt_password.DefaultText = ""
         txt_password.FillColor = Color.FromArgb(CByte(244), CByte(246), CByte(248))
         txt_password.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
-        txt_password.Font = New Font("Segoe UI", 10.0F)
+        txt_password.Font = New Font("Segoe UI", 10F)
         txt_password.ForeColor = Color.Black
         txt_password.Location = New Point(55, 230)
         txt_password.Name = "txt_password"
@@ -208,7 +208,7 @@ Partial Class LoginForm
         txt_username.DefaultText = ""
         txt_username.FillColor = Color.FromArgb(CByte(244), CByte(246), CByte(248))
         txt_username.FocusedState.BorderColor = Color.FromArgb(CByte(240), CByte(127), CByte(35))
-        txt_username.Font = New Font("Segoe UI", 10.0F)
+        txt_username.Font = New Font("Segoe UI", 10F)
         txt_username.ForeColor = Color.Black
         txt_username.Location = New Point(55, 170)
         txt_username.Name = "txt_username"
@@ -223,7 +223,7 @@ Partial Class LoginForm
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Font = New Font("Segoe UI", 20.0F, FontStyle.Bold)
+        Label1.Font = New Font("Segoe UI", 20F, FontStyle.Bold)
         Label1.ForeColor = Color.FromArgb(CByte(15), CByte(52), CByte(97))
         Label1.Location = New Point(50, 80)
         Label1.Name = "Label1"
@@ -243,7 +243,7 @@ Partial Class LoginForm
         ' LoginForm
         ' 
         AcceptButton = btn_login
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.bg_login
         ClientSize = New Size(750, 450)
